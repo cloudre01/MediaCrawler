@@ -14,13 +14,7 @@ import os
 PLATFORM = "xhs"
 KEYWORDS = "OOTD,美食,穿搭"  # 关键词搜索配置，以英文逗号分隔
 LOGIN_TYPE = "cookie"  # qrcode or phone or cookie
-COOKIES = "abRequestId=e3cebd0d-8a1f-5c02-b7ea-5559e08fbe4f; xsecappid=xhs-pc-web;"
-"a1=192ace8ed7euok8vsymr8wak7x8hvesnjpc6hb81m30000360288; webId=e8a1ebc9172a674445e5de9ae8b3683c; "
-"gid=yjJ0SdYiJyVyyjJ0SdYdfUDYWd7lTYhMv6FYSy6E0TWCYKq8xhdMIx888qK8JYY842Wqy4J8; "
-"web_session=040069b461dee9c32b3f598e20354b0c524428; webBuild=4.41.1; "
-"websectiga=2a3d3ea002e7d92b5c9743590ebd24010cf3710ff3af8029153751e41a6af4a3; "
-"sec_poison_id=82e121ee-8655-4b55-8c13-54d97187ab84; unread={%22ub%22:%22671929190000000021001075%22%2C%22ue%22:%22671e6e6c0000000021003a62%22%2C%22uc%22:27}; "
-"acw_tc=3fad465146d42d5f3d192b471e39ef207368402e1bb1ff2703274ebb2b7f359e"
+COOKIES = os.environ.get("COOKIES")
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持小红书
 SORT_TYPE = "popularity_descending"
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持抖音
