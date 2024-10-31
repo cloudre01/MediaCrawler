@@ -1,12 +1,12 @@
-# 声明：本代码仅供学习和研究目的使用。使用者应遵守以下原则：  
-# 1. 不得用于任何商业用途。  
-# 2. 使用时应遵守目标平台的使用条款和robots.txt规则。  
-# 3. 不得进行大规模爬取或对平台造成运营干扰。  
-# 4. 应合理控制请求频率，避免给目标平台带来不必要的负担。   
+# 声明：本代码仅供学习和研究目的使用。使用者应遵守以下原则：
+# 1. 不得用于任何商业用途。
+# 2. 使用时应遵守目标平台的使用条款和robots.txt规则。
+# 3. 不得进行大规模爬取或对平台造成运营干扰。
+# 4. 应合理控制请求频率，避免给目标平台带来不必要的负担。
 # 5. 不得用于任何非法或不当的用途。
-#   
-# 详细许可条款请参阅项目根目录下的LICENSE文件。  
-# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。  
+#
+# 详细许可条款请参阅项目根目录下的LICENSE文件。
+# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
 
 
 # -*- coding: utf-8 -*-
@@ -14,7 +14,7 @@
 # @Time    : 2024/4/6 15:30
 # @Desc    : sql接口集合
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from db import AsyncMysqlDB
 from var import media_crawler_db_var
@@ -62,9 +62,10 @@ async def update_content_by_content_id(content_id: str, content_item: Dict) -> i
 
     """
     async_db_conn: AsyncMysqlDB = media_crawler_db_var.get()
-    effect_row: int = await async_db_conn.update_table("xhs_note", content_item, "note_id", content_id)
+    effect_row: int = await async_db_conn.update_table(
+        "xhs_note", content_item, "note_id", content_id
+    )
     return effect_row
-
 
 
 async def query_comment_by_comment_id(comment_id: str) -> Dict:
@@ -94,7 +95,9 @@ async def add_new_comment(comment_item: Dict) -> int:
 
     """
     async_db_conn: AsyncMysqlDB = media_crawler_db_var.get()
-    last_row_id: int = await async_db_conn.item_to_table("xhs_note_comment", comment_item)
+    last_row_id: int = await async_db_conn.item_to_table(
+        "xhs_note_comment", comment_item
+    )
     return last_row_id
 
 
@@ -109,7 +112,9 @@ async def update_comment_by_comment_id(comment_id: str, comment_item: Dict) -> i
 
     """
     async_db_conn: AsyncMysqlDB = media_crawler_db_var.get()
-    effect_row: int = await async_db_conn.update_table("xhs_note_comment", comment_item, "comment_id", comment_id)
+    effect_row: int = await async_db_conn.update_table(
+        "xhs_note_comment", comment_item, "comment_id", comment_id
+    )
     return effect_row
 
 
@@ -155,5 +160,37 @@ async def update_creator_by_user_id(user_id: str, creator_item: Dict) -> int:
 
     """
     async_db_conn: AsyncMysqlDB = media_crawler_db_var.get()
-    effect_row: int = await async_db_conn.update_table("xhs_creator", creator_item, "user_id", user_id)
+    effect_row: int = await async_db_conn.update_table(
+        "xhs_creator", creator_item, "user_id", user_id
+    )
     return effect_row
+
+
+async def get_trending_tags(limit: int = 10) -> List[Tuple[str, int]]:
+    """
+    获取热门标签
+    Args:
+        limit:
+
+    Returns:
+
+    """
+    query = """
+    SELECT tag, SUM(liked_count) AS weighted_likes 
+    FROM (
+        SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(tag_list, ',', n.n), ',', -1)) AS tag, liked_count
+        FROM xhs_notes
+        CROSS JOIN (
+            SELECT a.N + b.N * 10 + 1 AS n
+            FROM (SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+            CROSS JOIN (SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+        ) n
+        WHERE n.n <= 1 + (LENGTH(tag_list) - LENGTH(REPLACE(tag_list, ',', '')))
+    ) t
+    GROUP BY tag
+    ORDER BY weighted_likes DESC
+    LIMIT %s
+    """
+    async_db_conn: AsyncMysqlDB = media_crawler_db_var.get()
+    rows: List[Dict] = await async_db_conn.query(query, limit)
+    return [(row["tag"], row["weighted_likes"]) for row in rows]

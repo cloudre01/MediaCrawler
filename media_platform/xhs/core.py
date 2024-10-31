@@ -136,7 +136,7 @@ class XiaoHongShuCrawler(AbstractCrawler):
                     task_list = [
                         self.get_note_detail_async_task(
                             note_id=post_item.get("id"),
-                            xsec_source=post_item.get("xsec_source"),
+                            xsec_source=post_item.get("xsec_source", "pc_search"),
                             xsec_token=post_item.get("xsec_token"),
                             semaphore=semaphore
                         )
@@ -228,6 +228,8 @@ class XiaoHongShuCrawler(AbstractCrawler):
         """Get note detail"""
         async with semaphore:
             try:
+                # sleep random time to avoid being detected
+                await asyncio.sleep(random.random() * 2)
                 note_detail: Dict = await self.xhs_client.get_note_by_id_from_html(note_id, xsec_source, xsec_token)
                 # note_detail: Dict = await self.xhs_client.get_note_by_id(note_id, xsec_source, xsec_token)
                 if not note_detail:

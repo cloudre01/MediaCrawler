@@ -1,24 +1,32 @@
-# 声明：本代码仅供学习和研究目的使用。使用者应遵守以下原则：  
-# 1. 不得用于任何商业用途。  
-# 2. 使用时应遵守目标平台的使用条款和robots.txt规则。  
-# 3. 不得进行大规模爬取或对平台造成运营干扰。  
-# 4. 应合理控制请求频率，避免给目标平台带来不必要的负担。   
+# 声明：本代码仅供学习和研究目的使用。使用者应遵守以下原则：
+# 1. 不得用于任何商业用途。
+# 2. 使用时应遵守目标平台的使用条款和robots.txt规则。
+# 3. 不得进行大规模爬取或对平台造成运营干扰。
+# 4. 应合理控制请求频率，避免给目标平台带来不必要的负担。
 # 5. 不得用于任何非法或不当的用途。
-#   
-# 详细许可条款请参阅项目根目录下的LICENSE文件。  
-# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。  
+#
+# 详细许可条款请参阅项目根目录下的LICENSE文件。
+# 使用本代码即表示您同意遵守上述原则和LICENSE中的所有条款。
 
 
 # 基础配置
 PLATFORM = "xhs"
-KEYWORDS = "编程副业,编程兼职" # 关键词搜索配置，以英文逗号分隔
-LOGIN_TYPE = "qrcode"  # qrcode or phone or cookie
-COOKIES = ""
+KEYWORDS = "OOTD,美食,穿搭"  # 关键词搜索配置，以英文逗号分隔
+LOGIN_TYPE = "cookie"  # qrcode or phone or cookie
+COOKIES = "abRequestId=e3cebd0d-8a1f-5c02-b7ea-5559e08fbe4f; xsecappid=xhs-pc-web;"
+"a1=192ace8ed7euok8vsymr8wak7x8hvesnjpc6hb81m30000360288; webId=e8a1ebc9172a674445e5de9ae8b3683c; "
+"gid=yjJ0SdYiJyVyyjJ0SdYdfUDYWd7lTYhMv6FYSy6E0TWCYKq8xhdMIx888qK8JYY842Wqy4J8; "
+"web_session=040069b461dee9c32b3f598e20354b0c524428; webBuild=4.41.1; "
+"websectiga=2a3d3ea002e7d92b5c9743590ebd24010cf3710ff3af8029153751e41a6af4a3; "
+"sec_poison_id=82e121ee-8655-4b55-8c13-54d97187ab84; unread={%22ub%22:%22671929190000000021001075%22%2C%22ue%22:%22671e6e6c0000000021003a62%22%2C%22uc%22:27}; "
+"acw_tc=3fad465146d42d5f3d192b471e39ef207368402e1bb1ff2703274ebb2b7f359e"
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持小红书
 SORT_TYPE = "popularity_descending"
 # 具体值参见media_platform.xxx.field下的枚举值，暂时只支持抖音
 PUBLISH_TIME_TYPE = 0
-CRAWLER_TYPE = "search"  # 爬取类型，search(关键词搜索) | detail(帖子详情)| creator(创作者主页数据)
+CRAWLER_TYPE = (
+    "search"  # 爬取类型，search(关键词搜索) | detail(帖子详情)| creator(创作者主页数据)
+)
 
 # 是否开启 IP 代理
 ENABLE_IP_PROXY = False
@@ -39,7 +47,7 @@ HEADLESS = False
 SAVE_LOGIN_STATE = True
 
 # 数据保存类型选项配置,支持三种类型：csv、db、json, 最好保存到DB，有排重的功能。
-SAVE_DATA_OPTION = "json"  # csv or db or json
+SAVE_DATA_OPTION = "csv"  # csv or db or json
 
 # 用户浏览器缓存的浏览器文件配置
 USER_DATA_DIR = "%s_user_data_dir"  # %s will be replaced by platform name
@@ -47,8 +55,8 @@ USER_DATA_DIR = "%s_user_data_dir"  # %s will be replaced by platform name
 # 爬取开始页数 默认从第一页开始
 START_PAGE = 1
 
-# 爬取视频/帖子的数量控制
-CRAWLER_MAX_NOTES_COUNT = 200
+# 爬取视频/帖子的数量控制 control the maximum amount of videos/posts to be crawled
+CRAWLER_MAX_NOTES_COUNT = 50
 
 # 并发爬虫数量控制
 MAX_CONCURRENCY_NUM = 1
@@ -57,11 +65,10 @@ MAX_CONCURRENCY_NUM = 1
 ENABLE_GET_IMAGES = False
 
 # 是否开启爬评论模式, 默认开启爬评论
-ENABLE_GET_COMMENTS = True
+ENABLE_GET_COMMENTS = False
 
 # 爬取一级评论的数量控制(单视频/帖子)
 CRAWLER_MAX_COMMENTS_COUNT_SINGLENOTES = 10
-
 
 
 # 是否开启爬二级评论模式, 默认不开启爬二级评论
@@ -85,15 +92,12 @@ XHS_SPECIFIED_NOTE_URL_LIST = [
 # 指定抖音需要爬取的ID列表
 DY_SPECIFIED_ID_LIST = [
     "7280854932641664319",
-    "7202432992642387233"
+    "7202432992642387233",
     # ........................
 ]
 
 # 指定快手平台需要爬取的ID列表
-KS_SPECIFIED_ID_LIST = [
-    "3xf8enb8dbj6uig",
-    "3x6zz972bchmvqe"
-]
+KS_SPECIFIED_ID_LIST = ["3xf8enb8dbj6uig", "3x6zz972bchmvqe"]
 
 # 指定B站平台需要爬取的视频bvid列表
 BILI_SPECIFIED_ID_LIST = [
@@ -116,9 +120,7 @@ WEIBO_CREATOR_ID_LIST = [
 ]
 
 # 指定贴吧需要爬取的帖子列表
-TIEBA_SPECIFIED_ID_LIST = [
-
-]
+TIEBA_SPECIFIED_ID_LIST = []
 
 # 指定贴吧名称列表，爬取该贴吧下的帖子
 TIEBA_NAME_LIST = [
@@ -167,8 +169,8 @@ ENABLE_GET_WORDCLOUD = False
 # 自定义词语及其分组
 # 添加规则：xx:yy 其中xx为自定义添加的词组，yy为将xx该词组分到的组名。
 CUSTOM_WORDS = {
-    '零几': '年份',  # 将“零几”识别为一个整体
-    '高频词': '专业术语'  # 示例自定义词
+    "零几": "年份",  # 将“零几”识别为一个整体
+    "高频词": "专业术语",  # 示例自定义词
 }
 
 # 停用(禁用)词文件路径

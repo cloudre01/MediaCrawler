@@ -14,6 +14,9 @@
 # @Time    : 2023/12/2 12:52
 # @Desc    : 时间相关的工具函数
 
+import asyncio
+import random
+import math
 import time
 from datetime import datetime, timedelta, timezone
 
@@ -109,6 +112,23 @@ def rfc2822_to_timestamp(rfc2822_time):
     timestamp = int(dt_utc.timestamp())
 
     return timestamp
+
+
+def weighted_delay(max_delay=10):
+    base_delay = 1
+    weights = [i for i in range(max_delay, 0, -1)]
+    
+    additional_delays = list(range(1, max_delay+1))
+    additional_delay = random.choices(additional_delays, weights=weights, k=1)[0]
+    
+    total_delay = base_delay + additional_delay
+
+    return total_delay
+
+
+async def apply_delay(max_delay=10):
+    delay = weighted_delay(max_delay)
+    await asyncio.sleep(delay)
 
 
 if __name__ == '__main__':
