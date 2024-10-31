@@ -1,3 +1,4 @@
+import os
 # 声明：本代码仅供学习和研究目的使用。使用者应遵守以下原则：
 # 1. 不得用于任何商业用途。
 # 2. 使用时应遵守目标平台的使用条款和robots.txt规则。
@@ -41,7 +42,7 @@ IP_PROXY_PROVIDER_NAME = "kuaidaili"
 # 设置False会打开一个浏览器
 # 小红书如果一直扫码登录不通过，打开浏览器手动过一下滑动验证码
 # 抖音如果一直提示失败，打开浏览器看下是否扫码登录之后出现了手机号验证，如果出现了手动过一下再试。
-HEADLESS = False
+HEADLESS = True
 
 # 是否保存登录状态
 SAVE_LOGIN_STATE = True
@@ -178,3 +179,13 @@ STOP_WORDS_FILE = "./docs/hit_stopwords.txt"
 
 # 中文字体文件路径
 FONT_PATH = "./docs/STZHONGS.TTF"
+
+# Google Drive Configuration
+ENABLE_GDRIVE_UPLOAD = False
+GDRIVE_CREDENTIALS_PATH = os.environ.get("GOOGLE_DRIVE_API_CREDENTIALS")
+GDRIVE_FOLDER_ID = "1uVVTqRwyD2vKCbAFnguKdONCa674stBo"
+
+# Telegram Configuration
+ENABLE_TELEGRAM_NOTIFICATIONS = False
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
